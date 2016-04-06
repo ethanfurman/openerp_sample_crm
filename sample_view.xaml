@@ -1,0 +1,40 @@
+!!!xml1.0
+
+-act_window = 'ir.actions.act_window'
+-view = 'ir.ui.view'
+
+~openerp
+    ~data noupdate='0'
+
+        ~record model=view #sample_request_crm_form
+            @name: crm.sample.request.form
+            @model: sample.request
+            @inherit_id ref='sample.sample_request_form'
+            @priority eval='17'
+            @arch type='xml'
+                ~xpath expr="//form[@string='Sample Request']" position='attributes'
+                    ~attribute @setup: onload(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
+                @user_id position='after'
+                    @request_type on_change='onchange_request_type(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' widget='radio' writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
+                @send_to position='attributes'
+                    ~attribute @on_change: onchange_send_to(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
+                @contact_id position='attributes'
+                    ~attribute @attrs: {'invisible': ['|',('request_type','=','lead'),'&','&',('id','!=',False),('partner_id','!=',False),('partner_is_company','=',False)]}
+                    ~attribute @on_change: onchange_contact_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
+                @partner_id position='attributes'
+                    ~attribute @attrs: {'required': ['|',('request_type','=','customer')], 'invisible': [('request_type','!=','customer')]}
+                    ~attribute @on_change: onchange_partner_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
+                @partner_id position='after'
+                    @lead_name attrs="{'invisible': [('request_type','!=','lead')]}" readonly='1'
+                    @lead_company $Company attrs="{'invisible': [('request_type','!=','lead')]}" readonly='1'
+                    @lead_id attrs="{'required': [('request_type','=','lead')], 'invisible': [('request_type','!=','lead')]}" on_change='onchange_lead_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' options="{'limit':15}" domain="[('user_id','=',user_id)]" writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
+                
+        ~record model=view #sample_request_crm_list
+            @name: crm.sample.request.list
+            @model: sample.request
+            @inherit_id ref='sample.sample_request_list'
+            @arch type='xml'
+                @contact_id position='replace'
+                    @tree_contact $Contact
+                @partner_id position='replace'
+                    @tree_company $Company
