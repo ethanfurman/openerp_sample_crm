@@ -196,6 +196,7 @@ class crm_sample_request(osv.Model):
             send_to, user_id, contact_id, partner_id,
             request_type, lead_id, lead_company, lead_name, context=None
             ):
+        res = {}
         if partner_id:
             res = super(crm_sample_request, self).onchange_partner_id(
                     cr, uid, ids, send_to, user_id, contact_id, partner_id,
@@ -203,4 +204,4 @@ class crm_sample_request(osv.Model):
                     )
             if lead_id:
                 del res['value']['address']
-        return {}
+        return res
