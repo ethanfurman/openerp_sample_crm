@@ -18,16 +18,16 @@
                     @request_type on_change='onchange_request_type(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' widget='radio' writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
                 @send_to position='attributes'
                     ~attribute @on_change: onchange_send_to(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
-                @contact_id position='attributes'
-                    ~attribute @attrs: {'invisible': ['|',('request_type','=','lead'),'&','&',('id','!=',False),('partner_id','!=',False),('partner_is_company','=',False)]}
-                    ~attribute @on_change: onchange_contact_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
                 @partner_id position='attributes'
                     ~attribute @attrs: {'required': ['|',('request_type','=','customer')], 'invisible': [('request_type','!=','customer')]}
                     ~attribute @on_change: onchange_partner_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
+                @contact_id position='attributes'
+                    ~attribute @attrs: {'readonly': [('partner_id','=',False)], 'invisible': ['|',('request_type','=','lead'),'&','&',('id','!=',False),('partner_id','!=',False),('partner_is_company','=',False)]}
+                    ~attribute @on_change: onchange_contact_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
                 @partner_id position='after'
-                    @lead_name attrs="{'invisible': [('request_type','!=','lead')]}" readonly='1'
+                    @lead_id attrs="{'required': [('request_type','=','lead')], 'invisible': [('request_type','!=','lead')]}" options="{'create':0, 'create_edit':1}" on_change='onchange_lead_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' domain="[('user_id','=',user_id)]" writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
                     @lead_company $Company attrs="{'invisible': [('request_type','!=','lead')]}" readonly='1'
-                    @lead_id attrs="{'required': [('request_type','=','lead')], 'invisible': [('request_type','!=','lead')]}" on_change='onchange_lead_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' options="{'limit':15}" domain="[('user_id','=',user_id)]" writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
+                    @lead_name attrs="{'invisible': [('request_type','!=','lead')]}" readonly='1'
                 
         ~record model=view #sample_request_crm_list
             @name: crm.sample.request.list
