@@ -28,7 +28,7 @@ class crm_sample_request(osv.Model):
         for sample in self.browse(cr, uid, ids, context=context):
             if sample.request_type == 'lead':
                 contact = sample.lead_name or sample.lead_id.name
-                company = sample.lead_company or lead_id.partner_id.name or sample.lead_id.name
+                company = sample.lead_company or sample.lead_id.partner_id.name or sample.lead_id.name
                 if contact in (company, None):
                     contact = False
                 if company is None:
