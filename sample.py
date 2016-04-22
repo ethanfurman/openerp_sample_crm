@@ -180,10 +180,12 @@ class crm_sample_request(osv.Model):
 
     def onchange_send_to(
             self, cr, uid, ids,
-            send_to, user_id, contact_id, partner_id,
+            send_to, user_id, contact_id, partner_id, request_ship,
             request_type, lead_id, lead_company, lead_name, context=None
             ):
-        res = {'value': {}, 'domain': {}}
+        res = super(crm_sample_request, self).onchange_send_to(
+                cr, uid, ids, send_to, user_id, contact_id, partner_id, request_ship,
+                )
         res['value']['address'] = self._get_address(
                 cr, uid,
                 send_to, user_id, contact_id, partner_id,
