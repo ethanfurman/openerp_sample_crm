@@ -102,6 +102,18 @@ class crm_sample_request(osv.Model):
         label = '\n'.join(label)
         return label
 
+    def name_get(self, cr, uid, ids, context=None):
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        res = dict(super(crm_sample_request, self).name_get(cr, uid, ids, context=context))
+        data = dict((r['id'], r) for r in self.read(cr, uid, ids, fields=['id', 'request_type', 'lead_id'], context=context))
+        for id, name in res.items():
+            data_record = data[id]
+            if data_record['request_type'] == 'lead':
+                name = (data_record['lead_id'] or (None, ''))[1]
+                res[id] = name
+        return res.items()
+
     def onchange_contact_id(
             self, cr, uid, ids,
             send_to, user_id, contact_id, partner_id,
