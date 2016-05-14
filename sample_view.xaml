@@ -14,7 +14,7 @@
             @arch type='xml'
                 ~xpath expr="//form[@string='Sample Request']" position='attributes'
                     ~attribute @setup: onload(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
-                @user_id position='after'
+                @for_user_id position='after'
                     @request_type on_change='onchange_request_type(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' widget='radio' writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
                 @send_to position='attributes'
                     ~attribute @on_change: onchange_send_to(send_to, user_id, contact_id, partner_id, request_ship, request_type, lead_id, lead_company, lead_name, context)
