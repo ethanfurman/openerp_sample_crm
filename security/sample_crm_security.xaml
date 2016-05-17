@@ -1,0 +1,16 @@
+!!!xml
+~openerp
+    ~data noupdate='1'
+
+        ~record model='ir.rule' #sample_crm_rule_personal_lead
+            @name: Personal Sample Requests
+            @model_id ref='sample_requests'
+            @domain_force: [('user_id','=',user.id)]
+            @groups eval="[(4, ref('base.group_sale_salesman'))]"
+
+        ~record model='ir.rule' #crm_rule_all_lead
+            @name: All Sample Requests
+            @model_id ref='sample_requests'
+            @domain_force: [(1,'=',1)]
+            @groups eval="[(4, ref('base.group_sale_salesman_all_leads'))]"
+                
