@@ -18,6 +18,8 @@
                     @request_type on_change='onchange_request_type(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' widget='radio' writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
                 @send_to position='attributes'
                     ~attribute @on_change: onchange_send_to(send_to, user_id, contact_id, partner_id, request_ship, request_type, lead_id, lead_company, lead_name, context)
+                @partner_type position='attributes'
+                    ~attribute @attrs: {'invisible': [('request_type','!=','customer')]}
                 @partner_id position='attributes'
                     ~attribute @attrs: {'required': ['|',('request_type','=','customer')], 'invisible': [('request_type','!=','customer')]}
                     ~attribute @on_change: onchange_partner_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
