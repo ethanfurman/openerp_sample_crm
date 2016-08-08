@@ -78,28 +78,14 @@ class crm_sample_request(osv.Model):
                     cr, uid, send_to, user_id, contact_id, partner_id, context=context,
                     )
             return label
-        res = {'value': {}}
-        label = []
+        label = False
         if lead_id:
             crm_lead = self.pool.get('crm.lead')
             lead = crm_lead.browse(cr, uid, lead_id, context=context)
-            lead_partner = lead.partner_id
-            csz = ''
-            country = ''
-            if lead.city:
-                csz = lead.city
-            if lead.state_id or lead.zip:
-                csz += ','
-                if lead.state_id:
-                    csz += ' ' + lead.state_id.name
-                if lead.zip:
-                    csz += ' ' + lead.zip
-            if lead.country_id:
-                country = lead.country_id.name
-            for line in (lead_contact, lead_company, lead.street, lead.street2, csz, country):
-                if line:
-                    label.append(line)
-        label = '\n'.join(label)
+            label = ''
+            if lead_contact:
+                label += lead_contact + '\n'
+            label += crm_lead._display_address(cr, uid, lead, context=context)
         return label
 
     def name_get(self, cr, uid, ids, context=None):

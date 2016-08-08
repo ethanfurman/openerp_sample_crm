@@ -27,7 +27,7 @@
                     ~attribute @attrs: {'readonly': [('partner_id','=',False)], 'invisible': ['|',('request_type','=','lead'),'&','&',('id','!=',False),('partner_id','!=',False),('partner_is_company','=',False)]}
                     ~attribute @on_change: onchange_contact_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)
                 @partner_id position='after'
-                    @lead_id attrs="{'required': [('request_type','=','lead')], 'invisible': [('request_type','!=','lead')]}" options="{'create':0, 'create_edit':1}" on_change='onchange_lead_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' domain="[('user_id','=',user_id)]" writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
+                    @lead_id attrs="{'required': [('request_type','=','lead')], 'invisible': [('request_type','!=','lead')]}" options="{'create_edit':1}" on_change='onchange_lead_id(send_to, user_id, contact_id, partner_id, request_type, lead_id, lead_company, lead_name, context)' domain="[('user_id','=',user_id)]" writeonly="groups('base.group_sale_salesman,sample.group_sample_user')"
                     @lead_company $Company attrs="{'invisible': [('request_type','!=','lead')]}" readonly='1'
                     @lead_name attrs="{'invisible': [('request_type','!=','lead')]}" readonly='1'
                 
