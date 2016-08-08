@@ -43,7 +43,7 @@ class crm_sample_request(osv.Model):
         'lead_name': fields.related('lead_id', 'contact_name', string='Contact', type='char', size=64),
         'lead_company': fields.related('lead_id', 'partner_name', string='Contact Company', type='char', size=64),
         # 'lead_partner_id': fields.related('lead_id', 'partner_id', string='Lead Company', type='many2one'),
-        'lead_id': fields.many2one('crm.lead', 'Lead', track_visibility='onchange'),
+        'lead_id': fields.many2one('crm.lead', 'Lead', track_visibility='onchange', ondelete='restrict'),
         'partner_id': fields.many2one('res.partner', 'Company', required=False, track_visibility='onchange'),
         'request_type': fields.selection(
             [('customer', 'Customer'), ('lead', 'Lead')],
