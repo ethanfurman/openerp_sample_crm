@@ -2,18 +2,7 @@
 
 # always
 from openerp.osv import fields, osv
-from openerp.osv.osv import except_osv as ERPError
 import logging
-
-# often useful
-from openerp import SUPERUSER_ID
-
-# occasionally useful
-import base64
-import time
-from openerp.tools import DEFAULT_SERVER_DATE_FORMAT, DEFAULT_SERVER_DATETIME_FORMAT, ormcache
-
-from fnx.oe import Proposed
 
 _logger = logging.getLogger(__name__)
 
@@ -183,6 +172,7 @@ class crm_sample_request(osv.Model):
             ):
         res = super(crm_sample_request, self).onchange_send_to(
                 cr, uid, ids, send_to, user_id, contact_id, partner_id, request_ship,
+                context=context
                 )
         res['value']['address'] = self._get_address(
                 cr, uid,
