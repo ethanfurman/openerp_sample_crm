@@ -1,4 +1,4 @@
-__all__ = ['sample', 'controllers']
+__all__ = ['sample', 'report']
 
 import sample
-import controllers
+import report

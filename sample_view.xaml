@@ -40,3 +40,5 @@
                     @tree_contact $Contact
                 @partner_id position='replace'
                     @tree_company $Company
+
+        ~report model='sample.request' name='sample.request.report' header='True' auto='True' multi='False' xml='sample_crm/report/sample.xml' xsl='sample_crm/report/sample.xsl' $Sample_Request #sample.report_sample_request_form
