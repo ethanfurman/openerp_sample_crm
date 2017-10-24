@@ -192,10 +192,9 @@ class crm_sample_request(osv.Model):
                     cr, uid, ids, send_to, user_id, contact_id, partner_id,
                     context=context
                     )
-            if lead_id:
-                del res['value']['address']
         if request_type == 'customer':
             partner_type_res = self.onchange_partner_type(cr, uid, ids, 0, partner_id, context=context)
             res['value'].update(partner_type_res['value'])
             res['domain'].update(partner_type_res['domain'])
+        del res['value']
         return res
