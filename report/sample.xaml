@@ -13,6 +13,7 @@
             ~customer type='field' @partner_id.name
             ~lead-contact type='field' @lead_id.contact_name
             ~lead-company type='field' @lead_id.partner_name
+            ~telephone type='field' @phone
         ~dept type='field' @department
         ~address-label type='field' @address
         ~address-type type='field' @address_type
