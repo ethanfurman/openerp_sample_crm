@@ -9,6 +9,7 @@ _logger = logging.getLogger(__name__)
 class crm_sample_request(osv.Model):
     _name = 'sample.request'
     _inherit = 'sample.request'
+    _phone_checks = ['contact_id', 'lead_id', 'partner_id']
 
     def _get_tree_contacts(self, cr, uid, ids, field_names, arg, context=None):
         if isinstance(ids, (int, long)):
@@ -99,6 +100,11 @@ class crm_sample_request(osv.Model):
                 send_to, user_id, contact_id, partner_id,
                 context=context
                 )
+        res['value']['phone'] = self._get_phone(
+                cr, uid,
+                (('res.partner', contact_id), ('crm.lead', lead_id), ('res.partner', partner_id)),
+                context=context,
+                )
         if lead_id:
             del res['value']['address']
         return res
@@ -128,6 +134,11 @@ class crm_sample_request(osv.Model):
                 request_type, lead_id, lead_company, lead_name,
                 context=context
                 )
+        res['value']['phone'] = self._get_phone(
+                cr, uid,
+                (('res.partner', contact_id), ('crm.lead', lead_id), ('res.partner', partner_id)),
+                context=context,
+                )
         return res
 
 
@@ -140,6 +151,11 @@ class crm_sample_request(osv.Model):
                 cr, uid, ids,
                 send_to, user_id, contact_id, partner_id,
                 context=context
+                )
+        res['value']['phone'] = self._get_phone(
+                cr, uid,
+                (('res.partner', contact_id), ('crm.lead', lead_id), ('res.partner', partner_id)),
+                context=context,
                 )
         if lead_id:
             del res['value']['address']
