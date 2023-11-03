@@ -36,11 +36,11 @@ class crm_sample_request(osv.Model):
         'lead_id': fields.many2one('crm.lead', 'Lead', track_visibility='onchange', ondelete='restrict'),
         'partner_id': fields.many2one('res.partner', 'Company', required=False, track_visibility='onchange'),
         'request_type': fields.selection(
-            [('customer', 'Customer'), ('lead', 'Lead')],
+            [('customer', 'Customer'), ('lead', 'Lead'), ('department', 'Department')],
             string='Request Type', track_visibility='onchange',
             ),
         'send_to': fields.selection(
-            [('rep', 'Sales Rep'), ('customer', 'Client')],
+            [('rep', 'Sales Rep'), ('customer', 'Client'), ('requester', 'Requester')],
             string='Send to', required=True, track_visibility='onchange',
             ),
         'tree_contact': fields.function(
