@@ -26,6 +26,9 @@ class crm_sample_request(osv.Model):
             elif sample.request_type == 'customer':
                 contact = sample.contact_id.name
                 company = sample.partner_id.name
+            elif sample.request_type == 'department':
+                contact = 'Falcon: ' + sample.for_user_id.name
+                company = 'internal'
             res[sample.id] = {'tree_contact': contact, 'tree_company': company}
         return res
 
