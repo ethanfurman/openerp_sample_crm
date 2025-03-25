@@ -1,10 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# always
 from openerp.osv import fields, osv
 import logging
 
 _logger = logging.getLogger(__name__)
+
+## tables
 
 class crm_sample_request(osv.Model):
     _name = 'sample.request'
@@ -217,3 +218,40 @@ class crm_sample_request(osv.Model):
             res['domain'].update(partner_type_res['domain'])
         del res['value']
         return res
+
+    def write(self, cr, uid, ids, values, context=None):
+        if context is None:
+            context = {}
+        if isinstance(ids, (int, long)):
+            ids = [ids]
+        candidate_ids = [
+                r['id']
+                for r in self.read(cr, uid, ids, fields=['request_type', 'state'], context=context)
+                if r['state'] != 'complete' and r['request_type'] == 'lead'
+                ]
+        res = super(crm_sample_request, self).write(cr, uid, ids, values, context=context)
+        opportunity_ids = [
+                (r['id'], r['lead_id'][0])
+                for r in self.read(cr, uid, candidate_ids, fields=['lead_id','state'], context=context)
+                if r['state'] == 'complete'
+                ]
+        crm_lead = self.pool.get('crm.lead')
+        for opp_id, lead_id in opportunity_ids:
+            # taken from crm/wizard/crm_lead_to_opportunity.py
+            # lead_id = crm_lead.merge_opportunity(cr, uid, [opp_id], context=context)
+            lead_ids = [lead_id]
+            lead = crm_lead.browse(cr, uid, lead_ids, context=context)[0]
+            if lead.type == "lead":
+                #partner_ids_map = self._create_partner(cr, uid, ids, context=context)
+                partner_id = lead.partner_id and lead.partner_id.id or False
+                partner_ids_map = crm_lead.handle_partner_assignation(cr, uid, lead_ids, 'create', partner_id, context=context)
+                partner_id = partner_ids_map.get(lead_id, False)
+                team_id = values.get('section_id', False)
+                # FIXME: cannot pass user_ids as the salesman allocation only works in batch
+                res = crm_lead.convert_opportunity(cr, uid, [lead_id], partner_id, [], team_id, context=context)
+                # FIXME: must perform salesman allocation in batch separately here
+                user_ids = values.get('user_ids', False)
+                if user_ids:
+                    crm_lead.allocate_salesman(cr, uid, lead_ids, user_ids, team_id=team_id, context=context)
+        return res
+
