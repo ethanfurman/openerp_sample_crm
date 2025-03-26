@@ -19,6 +19,7 @@
     'update_xml': [
         'security/sample_crm_security.xaml',
         'sample_view.xaml',
+	'crm_lead_view.xaml',
         ],
     'installable': True,
     'application': True,

@@ -1,0 +1,11 @@
+!!! xml1.0
+~openerp
+    ~data
+
+        ~record model='ir.ui.view' #crm_case_tree_view_leads
+            @model: crm.lead
+            @inherit_id ref='crm.crm_case_tree_view_leads'
+            @arch type='xml'
+                @user_id position='replace'
+                @create_date position='after'
+                    @user_id
