@@ -9,3 +9,6 @@
                 @user_id position='replace'
                 @create_date position='after'
                     @user_id
+
+        ~menuitem name="Leads" #menu_sample_crm_lead action='crm.crm_case_category_act_leads_all' parent='sample.sample_sub' sequence='40'
+        ~menuitem name="Opportunities" #menu_sample_crm_opportunity action='crm.crm_case_category_act_oppor11' parent='sample.sample_sub' sequence='50'
